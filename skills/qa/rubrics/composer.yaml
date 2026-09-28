@@ -1,0 +1,10 @@
+agent: composer
+max_iterations: 3
+checks:
+  - {id: CMP-1, blocking: true, type: script, rule: "Structure, ledger tags, low-confidence wording, human-context labels, length limit", how: "python scripts/qa/verify_brief.py brief.md ledger.jsonl"}
+  - {id: CMP-2, blocking: true, type: judgment, rule: "Recommendation is consistent with the evidence; each recommendation sentence cites a ledger id whose claim supports it"}
+  - {id: CMP-3, blocking: true, type: judgment, rule: "No unsupported claim; anything unsourced is labeled ASSUMPTION"}
+  - {id: CMP-4, blocking: true, type: judgment, rule: "At least 2 options with trade-offs; a 'this changes if' condition tied to a ledger value"}
+  - {id: CMP-5, blocking: true, type: judgment, rule: "No ranking or evaluation of individuals"}
+  - {id: CMP-6, blocking: true, type: judgment, rule: "Provenance lists QA verdict and iteration per agent; UNVERIFIED banner present if any escalation"}
+  - {id: CMP-7, blocking: false, type: judgment, rule: "Readable in under 2 minutes; plain language; no adjectives without numbers"}

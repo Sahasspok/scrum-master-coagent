@@ -1,0 +1,8 @@
+agent: context
+max_iterations: 3
+checks:
+  - {id: CTX-1, blocking: true, type: script, rule: "Ledger row has source_type human_context", how: "inspect ledger.jsonl"}
+  - {id: CTX-2, blocking: true, type: judgment, rule: "Raw normalized.json untouched; adjusted copy exists; both values reported"}
+  - {id: CTX-3, blocking: true, type: judgment, rule: "Only affected tools were re-run, and each re-run passed its own rubric"}
+  - {id: CTX-4, blocking: true, type: judgment, rule: "Minimal disclosure: no medical or personal reasons stored"}
+  - {id: CTX-5, blocking: true, type: judgment, rule: "Human context is never presented as system data"}

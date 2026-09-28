@@ -1,0 +1,8 @@
+agent: mcp-connector
+max_iterations: 3
+checks:
+  - {id: CON-1, blocking: true, type: script, rule: "Fetched ticket count equals meta.total_expected (100% of requested tickets)", how: "python scripts/qa/validate_normalized.py normalized.json <expected_count>"}
+  - {id: CON-2, blocking: true, type: script, rule: "normalized.json is schema-valid", how: "python scripts/qa/validate_normalized.py normalized.json"}
+  - {id: CON-3, blocking: true, type: script, rule: "No null points or unparseable timestamps without a flag", how: "validate_normalized.py"}
+  - {id: CON-4, blocking: false, type: script, rule: "meta.fetched_at is within 24 hours of the run", how: "compare timestamps"}
+  - {id: CON-5, blocking: true, type: judgment, rule: "No raw MCP payload or personal names in normalized.json; opaque refs only"}

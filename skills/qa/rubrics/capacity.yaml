@@ -1,0 +1,9 @@
+agent: capacity-forecast
+max_iterations: 3
+checks:
+  - {id: CAP-1, blocking: true, type: script, rule: "Independent recompute matches: net hours within 0.01, points and over-commit exact", how: "python scripts/qa/recompute_capacity.py normalized.json capacity_out.json"}
+  - {id: CAP-2, blocking: true, type: script, rule: "Every deduction has a source (PTO event or stated rule)", how: "recompute_capacity.py"}
+  - {id: CAP-3, blocking: true, type: script, rule: "over_commit_pct = (candidate - capacity) / capacity; scope_cut_pct reported separately", how: "recompute_capacity.py"}
+  - {id: CAP-4, blocking: true, type: script, rule: "History has 3 or more sprints, otherwise confidence is low with a reason", how: "recompute_capacity.py"}
+  - {id: CAP-5, blocking: true, type: script, rule: "Regression tests pass", how: "pytest -q tests"}
+  - {id: CAP-6, blocking: true, type: judgment, rule: "Ledger rows exist for points, net_hours, over-commit; none use an unstated formula"}

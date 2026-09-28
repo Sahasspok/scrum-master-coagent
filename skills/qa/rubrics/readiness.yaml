@@ -1,0 +1,8 @@
+agent: backlog-readiness
+max_iterations: 3
+checks:
+  - {id: RDY-1, blocking: true, type: judgment, rule: "Every flag cites its rule id and the ticket text or value that triggered it"}
+  - {id: RDY-2, blocking: true, type: script, rule: "Size threshold derives from 10 or more historical tickets; otherwise no size flags and a low-confidence ledger row", how: "inspect readiness_out.size_threshold and ledger"}
+  - {id: RDY-3, blocking: true, type: script, rule: "No false negatives on the seeded set (hidden fixtures)", how: "pytest tests/test_regression.py::test_readiness"}
+  - {id: RDY-4, blocking: true, type: script, rule: "No false positives on seeded clean tickets", how: "pytest tests/test_regression.py::test_readiness"}
+  - {id: RDY-5, blocking: true, type: judgment, rule: "Every flagged ticket id exists in the input"}

@@ -1,0 +1,9 @@
+agent: research
+max_iterations: 3
+checks:
+  - {id: RSC-1, blocking: true, type: script, rule: "Every citation's DOI resolves", how: "python scripts/doi_check.py <doi>"}
+  - {id: RSC-2, blocking: true, type: script, rule: "Type is journal-article or proceedings-article, and not retracted", how: "doi_check.py"}
+  - {id: RSC-3, blocking: true, type: judgment, rule: "Venue is peer-reviewed; no preprints, blogs or vendor sources"}
+  - {id: RSC-4, blocking: true, type: judgment, rule: "Each claim matches the paper's finding; no extrapolation"}
+  - {id: RSC-5, blocking: true, type: judgment, rule: "Design, sample and limitation stated for each finding"}
+  - {id: RSC-6, blocking: true, type: judgment, rule: "If nothing credible exists the output is exactly 'no credible evidence found'"}

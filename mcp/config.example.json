@@ -1,0 +1,29 @@
+{
+  "_policy": "Read-only credentials for the connector agent. Write credentials exist only for the executor and are used only with approval.json. Never commit real values; use environment variables. Replace <...> with the official or maintained MCP server for each tool.",
+  "mcpServers": {
+    "jira": {
+      "command": "<your-jira-mcp-server-command>",
+      "args": [],
+      "env": {
+        "JIRA_BASE_URL": "${JIRA_BASE_URL}",
+        "JIRA_EMAIL": "${JIRA_EMAIL}",
+        "JIRA_API_TOKEN": "${JIRA_API_TOKEN_READONLY}"
+      }
+    },
+    "clickup": {
+      "command": "<your-clickup-mcp-server-command>",
+      "args": [],
+      "env": { "CLICKUP_API_TOKEN": "${CLICKUP_TOKEN_READONLY}" }
+    },
+    "calendar": {
+      "command": "<your-calendar-mcp-server-command>",
+      "args": [],
+      "env": { "CALENDAR_TOKEN": "${CALENDAR_TOKEN_READONLY}" }
+    },
+    "slack": {
+      "command": "<your-slack-mcp-server-command>",
+      "args": [],
+      "env": { "SLACK_BOT_TOKEN": "${SLACK_TOKEN_READONLY}" }
+    }
+  }
+}

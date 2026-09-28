@@ -1,0 +1,8 @@
+agent: executor
+max_iterations: 3
+checks:
+  - {id: EXE-1, blocking: true, type: judgment, rule: "Executed actions equal approval.json actions exactly"}
+  - {id: EXE-2, blocking: true, type: judgment, rule: "Before and after snapshots exist for every action"}
+  - {id: EXE-3, blocking: true, type: judgment, rule: "Nothing extra written"}
+  - {id: EXE-4, blocking: true, type: judgment, rule: "Re-running produces no additional change (idempotent)"}
+  - {id: EXE-5, blocking: true, type: script, rule: "approval.json present and not expired", how: "compare expires_at with now"}

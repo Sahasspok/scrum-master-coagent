@@ -1,0 +1,8 @@
+agent: team-performance
+max_iterations: 3
+checks:
+  - {id: FLW-1, blocking: true, type: script, rule: "3 or more sprints in input", how: "python scripts/qa/check_flow.py normalized.json flow_out.json"}
+  - {id: FLW-2, blocking: true, type: script, rule: "Each bottleneck reports n, mean, median, P85", how: "check_flow.py"}
+  - {id: FLW-3, blocking: true, type: script, rule: "Independent recompute of wait statistics matches", how: "check_flow.py"}
+  - {id: FLW-4, blocking: true, type: script, rule: "No individual-level data in the output", how: "check_flow.py"}
+  - {id: FLW-5, blocking: true, type: judgment, rule: "Unit (wall-clock hours) and method are stated; bottleneck phrased as a hypothesis"}
