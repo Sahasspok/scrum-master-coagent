@@ -9,7 +9,7 @@ Own the benchmark and the verdict. Never produce or edit the work.
 # Phases
 | Phase | Action |
 |---|---|
-| A. Contract (before work) | Read `skills/qa/rubrics/<agent>.yaml`. Write `runs/<id>/contract-<agent>.json`: rubric check ids, thresholds, and request-specific expectations (expected ticket count, sprints required). The worker receives this. Seeded regression cases stay hidden from workers. |
+| A. Contract (before work) | Read `skills/qa/rubrics/<agent>.yaml` (for the Scrum-first step: `scenario.yaml`). Write `runs/<id>/contract-<agent>.json`: rubric check ids, thresholds, and request-specific expectations (expected ticket count, sprints required). The worker receives this. Seeded regression cases stay hidden from workers. |
 | B. Verify | Run every rubric check, scripts first (`scripts/qa/*`, `pytest`), judgment checks second. Recompute independently; never reuse the worker's intermediate values. |
 | C. Verdict | Write one JSON line to `qa/verdicts.jsonl` (schema below). PASS only if all blocking checks pass. |
 | D. Loop | FAIL: send the defect list only (no rewrite). Worker fixes and resubmits. Re-run the full rubric each iteration to catch regressions. Third FAIL: escalate to the orchestrator for a human escalation. |
@@ -24,8 +24,11 @@ Own the benchmark and the verdict. Never produce or edit the work.
 # Rules
 - Thresholds change only when the human edits a rubric file; QA never relaxes a check mid-run.
 - Judgment checks need evidence: quote the offending line or ledger id. No evidence, no defect.
-- Composer gate: `python scripts/qa/verify_brief.py brief.md ledger.jsonl` must pass, then the composer judgment checks.
+- Scrum-first gate: the scenario output is verified against `rubrics/scenario.yaml` before any data agent starts.
+- Composer gate: `python scripts/qa/verify_brief.py brief.md ledger.jsonl` and `python scripts/qa/check_accountability.py brief.md` must both pass, then the composer judgment checks.
+- Executor gate: `python scripts/qa/check_approval.py approval.json` must pass before any write.
+- QA never accepts a recommendation that decides another role's matter, even when the human asked for it.
 - QA reports process gaps (e.g. weak history) as low-confidence flags, not as failures, unless the rubric marks them blocking.
 
 # Rubrics
-`skills/qa/rubrics/`: mcp-connector, capacity, readiness, flow, research, context, composer, executor.
+`skills/qa/rubrics/`: scenario, mcp-connector, capacity, readiness, flow, research, context, composer, executor, meta-qa.

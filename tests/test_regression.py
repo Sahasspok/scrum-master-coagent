@@ -82,17 +82,84 @@ def test_verify_brief(fix, tmp_path):
     lp = tmp_path / "ledger.jsonl"
     ids = {r["key"]: r["id"] for r in ledger.append(tool(fix, "capacity")["ledger_rows"], lp)}
     cid = ids["capacity.points"]
-    secs = "\n".join(f"## {s}\nText only." for s in
-                     ["Options and trade-offs", "Evidence", "Context and assumptions", "Risks",
-                      "Open questions for you", "Provenance"])
     good, bad = tmp_path / "good.md", tmp_path / "bad.md"
-    good.write_text(f"# Brief\n## Recommendation\nCommit to 34 SP [{cid}].\n{secs}\n")
-    bad.write_text(f"# Brief\n## Recommendation\nCommit to 34 SP.\n{secs}\n")
+    good.write_text(
+        "# Brief\n"
+        f"## Answer\nYes, commit to 34 SP [{cid}].\n"
+        f"## Data supporting this\n| ID | Fact |\n|---|---|\n| [{cid}] | 34 SP |\n"
+        f"## Recommendation\nCommit to 34 SP [{cid}].\n"
+        f"**Insight:** the buffer is the binding constraint this sprint [{cid}].\n"
+        f"**What I'd look into next:** whether the rate holds next sprint too [{cid}].\n"
+        "## Questions to keep moving\n1. Confirm the commitment and I'll notify the team now.\n"
+        "---\n**Provenance:** fixture | QA: capacity-forecast PASS (1)\n"
+    )
+    bad.write_text(
+        "# Brief\n## Recommendation\nCommit to 34 SP.\n"
+        "## Questions to keep moving\n1. What should we do?\n"
+    )
     v = ROOT / "scripts" / "qa" / "verify_brief.py"
-    assert sh(v, good, lp).returncode == 0
+    assert sh(v, good, lp).returncode == 0, sh(v, good, lp).stdout
     assert sh(v, bad, lp).returncode == 1
 
 
 def test_cache_runner(fix):
     r = sh(ROOT / "scripts" / "run.py", "capacity", fix)
     assert r.returncode == 0 and json.loads(r.stdout)["predicted_points"] == 34
+
+
+def test_meta_qa_calibration(tmp_path):
+    runs = tmp_path / "runs"
+    # Three closed runs: capacity predicted vs actual, one readiness false positive.
+    cases = [(34, 33, True, False), (30, 32, True, True), (28, 28, False, True)]
+    for i, (pred, actual, t104_blocked, t112_blocked) in enumerate(cases, 1):
+        d = runs / f"run{i}"
+        d.mkdir(parents=True)
+        (d / "capacity_out.json").write_text(json.dumps({"predicted_points": pred}))
+        (d / "readiness_out.json").write_text(json.dumps({"flags": [{"ticket": "104"}, {"ticket": "112"}]}))
+        (d / "actuals.json").write_text(json.dumps({
+            "run": f"run{i}", "closed_at": "2026-10-01T00:00:00",
+            "capacity": {"actual_completed_points": actual},
+            "readiness": [{"ticket": "104", "did_block": t104_blocked},
+                          {"ticket": "112", "did_block": t112_blocked}],
+            "flow": {"bottleneck_confirmed_next_sprint": True},
+        }))
+
+    calib = json.loads(sh(ROOT / "scripts" / "qa" / "audit_calibration.py", runs).stdout)
+    assert calib["closed_runs"] == 3
+    assert calib["capacity"]["n"] == 3
+    # (1/34 + 2/30 + 0/28) / 3 * 100
+    assert calib["capacity"]["mean_abs_pct_error"] == pytest.approx(3.2, abs=0.2)
+    assert calib["readiness"]["flagged_and_checked"] == 6
+    assert calib["readiness"]["true_positives"] == 4
+    assert calib["readiness"]["false_positives"] == 2
+    assert calib["readiness"]["precision_pct"] == pytest.approx(66.7, abs=0.1)
+    assert calib["flow"]["confirmation_rate_pct"] == 100.0
+
+    good = tmp_path / "meta_qa_out.json"
+    good.write_text(json.dumps({"tool": "meta_qa", "closed_runs": 3, "calibration": calib,
+                                 "bands": {"capacity": "within band", "readiness": "drifting",
+                                          "flow": "within band"}}))
+    v = ROOT / "scripts" / "qa" / "verify_calibration.py"
+    assert sh(v, runs, good).returncode == 0, sh(v, runs, good).stdout
+
+    tampered = tmp_path / "tampered.json"
+    bad_calib = dict(calib, capacity={**calib["capacity"], "mean_abs_pct_error": 1.0})
+    tampered.write_text(json.dumps({"closed_runs": 3, "calibration": bad_calib,
+                                    "bands": {"capacity": "within band", "readiness": "drifting",
+                                             "flow": "within band"}}))
+    assert sh(v, runs, tampered).returncode == 1
+
+    scorecard = tmp_path / "scorecard.yaml"
+    scorecard.write_text(
+        "capacity_mape_max_pct: 15\nreadiness_precision_min_pct: 70\n"
+        "flow_confirmation_min_pct: 60\nqa_agreement_min_pct: 90\n"
+        "research_integrity_min_pct: 100\nmin_closed_runs_for_trend: 3\n"
+    )
+    b = ROOT / "scripts" / "qa" / "check_band.py"
+    assert sh(b, good, scorecard).returncode == 0, sh(b, good, scorecard).stdout
+
+    mislabeled = tmp_path / "mislabeled.json"
+    mislabeled.write_text(json.dumps({"closed_runs": 3, "calibration": calib,
+                                      "bands": {"capacity": "within band", "readiness": "within band",
+                                               "flow": "within band"}}))
+    assert sh(b, mislabeled, scorecard).returncode == 1

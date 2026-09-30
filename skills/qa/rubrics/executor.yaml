@@ -5,4 +5,4 @@ checks:
   - {id: EXE-2, blocking: true, type: judgment, rule: "Before and after snapshots exist for every action"}
   - {id: EXE-3, blocking: true, type: judgment, rule: "Nothing extra written"}
   - {id: EXE-4, blocking: true, type: judgment, rule: "Re-running produces no additional change (idempotent)"}
-  - {id: EXE-5, blocking: true, type: script, rule: "approval.json present and not expired", how: "compare expires_at with now"}
+  - {id: EXE-5, blocking: true, type: script, rule: "approval.json present, not expired, every action in the facilitation allow-list, no payload field touching order, estimates, assignees, status or Sprint scope", how: "python scripts/qa/check_approval.py approval.json"}

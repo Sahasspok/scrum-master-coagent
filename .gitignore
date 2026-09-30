@@ -1,6 +1,6 @@
 .cache/
 runs/
 mcp/config.json
-grounding/scrum-guide-2020/chunks/
+grounding/*/chunks/
 __pycache__/
 *.pyc

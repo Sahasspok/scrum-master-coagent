@@ -1,0 +1,270 @@
+# Scrum Master playbook v1. This is OUR recommendation layer: an interpretation of the Scrum Guide 2020
+# for common Scrum Master situations. It is not the Guide. The Guide chunks retrieved through
+# `guide_anchors` are the only citable Scrum text; `scrum_stance` and `sm_moves` are cited as playbook rows.
+# Edited by humans only. `verb` must be one of: Facilitate, Coach, Teach, Make transparent,
+# Remove impediment, Shield, Ask, Escalate (enforced by check_accountability.py).
+version: 1
+scenarios:
+
+  - id: S01
+    name: Sprint commitment and capacity
+    owner: Developers
+    events: [Sprint Planning]
+    triggers: [can we commit, commit to, take these tickets, how much can we take, sprint planning, plan sprint, plan my sprint, sprint plan, plan the sprint, capacity for, how many points]
+    guide_anchors: [Sprint Planning, Sprint Backlog, Developers]
+    supplementary_topics: [sprint planning]
+    data_tools: [capacity, readiness]
+    scrum_stance: >
+      The Developers forecast and own the Sprint Backlog. The Scrum Master makes capacity facts visible,
+      protects the time-box, and helps the Scrum Team craft a Sprint Goal. The number is an input to their
+      conversation, never the Scrum Master's verdict.
+    sm_moves:
+      - {verb: Make transparent, where: Sprint Planning, move: "Put the capacity signal and the size of the candidate set in front of the Developers as inputs to their own forecast"}
+      - {verb: Facilitate, where: Sprint Planning, move: "Run the event so the Product Owner brings the Product Goal context and the Developers select what fits and shape a Sprint Goal"}
+      - {verb: Coach, where: Sprint Planning, move: "Coach the Developers to treat the forecast as a hypothesis they inspect daily, not a promise to defend"}
+      - {verb: Ask, where: "the Product Owner", move: "Prompt the Product Owner to clarify the Product Goal and prioritize candidate items before Sprint Planning"}
+    coaching_questions:
+      - "Which of these items best serves a Sprint Goal, and what would you drop first if the forecast proves too big?"
+      - "What did the last few Sprints teach you about how much you can really finish?"
+    pm_traps: [telling the team what to commit to, choosing which tickets to drop, converting capacity into a target, drafting acceptance criteria on the team's behalf, organizing or reordering the backlog list]
+
+  - id: S02
+    name: Backlog readiness and refinement
+    owner: Product Owner
+    events: [Product Backlog refinement, Sprint Planning]
+    triggers: [is this ticket ready, ready for the sprint, acceptance criteria, refinement, split this, too big, story too large, estimate this, readiness, groom]
+    guide_anchors: [Product Backlog, Sprint Planning]
+    supplementary_topics: [refinement, grooming]
+    data_tools: [readiness]
+    scrum_stance: >
+      Refinement is an ongoing activity between the Product Owner and the Developers. The Product Owner owns
+      order and clarity of items; Developers own sizing. The Guide has no Definition of Ready, so any readiness
+      checklist is a team working agreement, not a Scrum rule. The Scrum Master helps the Product Owner find
+      techniques for clear items and makes sure refinement happens.
+    sm_moves:
+      - {verb: Make transparent, where: Refinement, move: "Bring the readiness signals (missing criteria, size, open dependencies) to the Product Owner and Developers as discussion prompts"}
+      - {verb: Facilitate, where: Refinement, move: "Facilitate a refinement session where the Product Owner and Developers decide together whether and how an item is split or clarified"}
+      - {verb: Coach, where: Refinement, move: "Coach the Product Owner on writing clear, concise items and the Developers on sizing what they can finish in one Sprint"}
+      - {verb: Ask, where: "the Product Owner", move: "Request the Product Owner to provide ordered priorities and testable acceptance criteria ahead of refinement"}
+    coaching_questions:
+      - "What would you need to know to be confident the Developers can finish this within one Sprint?"
+      - "Which of these items is the Product Owner ready to explain in Sprint Planning?"
+    pm_traps: [ruling an item ready or not ready, splitting or re-pointing tickets, reordering the backlog, imposing a Definition of Ready, drafting acceptance criteria or user stories for the Product Owner, organizing the backlog on behalf of the Product Owner]
+
+  - id: S03
+    name: Missed Sprint Goals and slipping forecasts
+    owner: Scrum Team
+    events: [Sprint Retrospective, Daily Scrum]
+    triggers: [slipping, missed the sprint goal, missed sprint goal, velocity dropped, why are we late, behind schedule, keep missing, not finishing, spillover, carry over, carry-over]
+    guide_anchors: [Sprint Retrospective, Sprint Backlog, Developers]
+    supplementary_topics: [retrospective]
+    data_tools: [flow]
+    scrum_stance: >
+      Slipping is information for inspection and adaptation, not a performance failure. The Scrum Team examines
+      how it plans, works and finishes; the Scrum Master makes the pattern visible and helps the team
+      inspect it in the Retrospective.
+    sm_moves:
+      - {verb: Make transparent, where: Sprint Retrospective, move: "Show the completion trend and where work waits, at team level only, as evidence for the Retrospective"}
+      - {verb: Facilitate, where: Sprint Retrospective, move: "Facilitate a Retrospective focused on planning and finishing patterns; let the team choose the improvement"}
+      - {verb: Coach, where: Daily Scrum, move: "Coach the Developers to use the Daily Scrum to adapt their plan toward the Sprint Goal early"}
+    coaching_questions:
+      - "What do we see when we compare what we planned with what we finished over the last Sprints?"
+      - "What is the smallest change we could try next Sprint, and how would we know it worked?"
+    pm_traps: [demanding a recovery plan, adding overtime or scope cuts on the team's behalf, ranking who is behind]
+
+  - id: S04
+    name: Impediments and flow bottlenecks
+    owner: Scrum Master
+    events: [Daily Scrum, Sprint Retrospective]
+    triggers: [blocked, blocker, impediment, bottleneck, waiting for, stuck, flow, wait time, dependency delays]
+    guide_anchors: [Scrum Master, Sprint Retrospective]
+    supplementary_topics: [impediment]
+    data_tools: [flow]
+    scrum_stance: >
+      Removing impediments to the Scrum Team's progress is the Scrum Master's own accountability. First help
+      the team resolve what is within its remit; take what is beyond it to the people who can change it.
+    sm_moves:
+      - {verb: Remove impediment, where: "your own remit", move: "Log the impediment with its wait-time evidence and take it to whoever can change it"}
+      - {verb: Escalate, where: "the organization", move: "Escalate the systemic cause, with the numbers, to the owner of the constraint"}
+      - {verb: Coach, where: Sprint Retrospective, move: "Coach the team to spot the pattern themselves and choose their own countermeasure"}
+    coaching_questions:
+      - "Where does work wait the longest, and what is that wait costing the Sprint Goal?"
+      - "Which part of this is within our control, and which part needs someone outside the team?"
+    pm_traps: [assigning someone to chase the blocker, naming who caused the delay, opening a risk register]
+
+  - id: S05
+    name: Outside interference and mid-Sprint scope changes
+    owner: Product Owner
+    events: [The Sprint, Sprint Review]
+    triggers: [mid-sprint, stakeholder wants, add to the sprint, urgent request, scope creep, cancel the sprint, pulled off, interrupt]
+    guide_anchors: [The Sprint, Product Owner, Scrum Master]
+    supplementary_topics: [sprint cancellation, change]
+    data_tools: []
+    scrum_stance: >
+      During the Sprint nothing should endanger the Sprint Goal. Scope may be clarified and renegotiated
+      between the Product Owner and Developers, and only the Product Owner can cancel a Sprint. The Scrum
+      Master shields the team by routing requests to the Product Owner and helping stakeholders understand why.
+    sm_moves:
+      - {verb: Shield, where: "the Sprint", move: "Route the request to the Product Owner instead of letting it reach the Developers directly"}
+      - {verb: Coach, where: "the Product Owner", move: "Coach the Product Owner on weighing the request against the Sprint Goal and on what renegotiating scope with the Developers involves"}
+      - {verb: Teach, where: "stakeholders", move: "Explain to the requester how a change enters through the Product Backlog and the next Sprint Planning"}
+    coaching_questions:
+      - "Does this threaten the Sprint Goal, or can it wait for the Product Backlog?"
+      - "If the Product Owner accepts it, what does the team renegotiate?"
+    pm_traps: [approving the change request, reshuffling the Sprint Backlog, absorbing the work by asking for overtime]
+
+  - id: S06
+    name: Daily Scrum health
+    owner: Developers
+    events: [Daily Scrum]
+    triggers: [daily scrum, standup, stand-up, daily meeting, status update meeting]
+    guide_anchors: [Daily Scrum]
+    supplementary_topics: [daily scrum, daily standup]
+    data_tools: []
+    scrum_stance: >
+      The Daily Scrum belongs to the Developers; it is for inspecting progress toward the Sprint Goal and
+      adapting the plan. The Scrum Master makes sure it happens and teaches the time-box, but does not run it
+      as a status meeting.
+    sm_moves:
+      - {verb: Teach, where: Daily Scrum, move: "Teach the Developers to keep the event within its time-box and centered on the Sprint Goal"}
+      - {verb: Coach, where: Daily Scrum, move: "Coach the Developers to own the format and to talk to each other, not report to you"}
+      - {verb: Ask, where: Sprint Retrospective, move: "Ask the team in the Retrospective whether the Daily Scrum still helps them adapt"}
+    coaching_questions:
+      - "What decision did yesterday's Daily Scrum change about today's work?"
+    pm_traps: [collecting status for a manager, calling on people one by one, tracking who spoke]
+
+  - id: S07
+    name: Sprint Retrospective
+    owner: Scrum Team
+    events: [Sprint Retrospective]
+    triggers: [retro, retrospective, improvement actions, action items from, lessons learned, same issues every]
+    guide_anchors: [Sprint Retrospective]
+    supplementary_topics: [retrospective]
+    data_tools: [flow]
+    scrum_stance: >
+      The Retrospective is where the Scrum Team plans ways to increase quality and effectiveness. The Scrum
+      Master ensures the event takes place and is positive and productive. Improvements are the team's to
+      choose and may enter the next Sprint Backlog.
+    sm_moves:
+      - {verb: Facilitate, where: Sprint Retrospective, move: "Facilitate the event so the team inspects people, interactions, processes, tools and its Definition of Done"}
+      - {verb: Make transparent, where: Sprint Retrospective, move: "Bring the team-level data on completion and waiting as one input, not the agenda"}
+      - {verb: Coach, where: Sprint Retrospective, move: "Coach the team to pick one or two impactful improvements it can start in the next Sprint"}
+    coaching_questions:
+      - "Which improvement from last time did we actually try, and what happened?"
+    pm_traps: [writing the action plan for the team, assigning action owners, reporting the outcome upward as a verdict]
+
+  - id: S08
+    name: Sprint Review and stakeholder engagement
+    owner: Product Owner
+    events: [Sprint Review]
+    triggers: [sprint review, demo, stakeholder feedback, stakeholders not attending, showcase]
+    guide_anchors: [Sprint Review, Product Owner]
+    supplementary_topics: [sprint review]
+    data_tools: []
+    scrum_stance: >
+      The Sprint Review is a working session where the Scrum Team and stakeholders inspect the outcome and
+      adapt the Product Backlog. The Scrum Master ensures it takes place, stays within its time-box and is
+      productive, and helps the Product Owner with stakeholder collaboration when asked.
+    sm_moves:
+      - {verb: Facilitate, where: Sprint Review, move: "Facilitate the review as a working session rather than a presentation"}
+      - {verb: Coach, where: "the Product Owner", move: "Coach the Product Owner on inviting the right stakeholders and on turning feedback into Product Backlog changes"}
+      - {verb: Teach, where: "stakeholders", move: "Explain to stakeholders how their feedback shapes the Product Backlog"}
+    coaching_questions:
+      - "What do we want stakeholders to decide or tell us in this review?"
+    pm_traps: [turning the review into a status report, presenting on the Product Owner's behalf]
+
+  - id: S09
+    name: Individual performance requests
+    owner: Scrum Team
+    events: [Sprint Retrospective]
+    triggers: [slowest, underperform, who is slow, who is blocked, who is behind, who is late, whose fault, blame, rank developers, rank the team, individual velocity, performance review, who is the weakest, productivity of]
+    guide_anchors: [The Scrum Team, Developers]
+    supplementary_topics: []
+    data_tools: []
+    scrum_stance: >
+      The Scrum Team is accountable as a whole and is self-managing. The co-agent does not measure or rank
+      individuals. The Scrum Master redirects the question to the system: what in the way the team works
+      makes progress slow?
+    sm_moves:
+      - {verb: Ask, where: "the requester", move: "Ask what decision the requester is trying to make and offer team-level flow data instead"}
+      - {verb: Coach, where: "the requester", move: "Coach the requester on what the Scrum Team's collective accountability means for how progress is discussed"}
+      - {verb: Make transparent, where: Sprint Retrospective, move: "Bring team-level patterns, never per-person figures, to the Retrospective"}
+    coaching_questions:
+      - "What would we change about how we work if we knew the answer to this?"
+    pm_traps: [ranking people, individual velocity, naming who is behind]
+
+  - id: S10
+    name: Task assignment and workload
+    owner: Developers
+    events: [Sprint Planning, Daily Scrum]
+    triggers: [assign, who should work on, allocate, resource allocation, who takes, delegate ticket]
+    guide_anchors: [Developers, Sprint Planning]
+    supplementary_topics: []
+    data_tools: []
+    scrum_stance: >
+      Developers decide who does what, when and how; the Scrum Team is self-managing. The Scrum Master coaches
+      that self-management and never allocates work.
+    sm_moves:
+      - {verb: Coach, where: Daily Scrum, move: "Coach the Developers to self-organize around the Sprint Goal and pull the next item themselves"}
+      - {verb: Ask, where: "the requester", move: "Ask what is driving the wish for an assignment (a stuck item, an idle person, an outside deadline) and address that"}
+      - {verb: Facilitate, where: Sprint Planning, move: "Facilitate a conversation where the Developers work out who takes what"}
+    coaching_questions:
+      - "How do you want to decide who picks this up?"
+    pm_traps: [assigning tickets, balancing load across named people, tracking utilization]
+
+  - id: S11
+    name: Definition of Done and quality
+    owner: Developers
+    events: [Sprint Retrospective]
+    triggers: [definition of done, bugs escaping, quality, technical debt, increment]
+    guide_anchors: [Definition of Done, Increment, Developers]
+    supplementary_topics: [definition of done]
+    data_tools: []
+    scrum_stance: >
+      Developers instill quality by adhering to the Definition of Done, which the Scrum Team owns. The Scrum
+      Master helps the team focus on producing high-value Increments that meet it.
+    sm_moves:
+      - {verb: Facilitate, where: Sprint Retrospective, move: "Facilitate a review of the Definition of Done against what actually escaped"}
+      - {verb: Coach, where: "the Developers", move: "Coach the Developers on tightening the Definition of Done themselves"}
+    coaching_questions:
+      - "What kept us from calling that Increment Done, and what would prevent it next time?"
+    pm_traps: [writing the Definition of Done for the team, adding sign-off gates, ranking defects by owner]
+
+  - id: S12
+    name: Reporting, forecasts and dates for management
+    owner: Product Owner
+    events: [Sprint Review]
+    triggers: [status report, report to management, for my manager, executive update, dashboard, burndown, when will, deadline, delivery date, roadmap date, compare teams]
+    guide_anchors: [Sprint Review, Product Backlog, Scrum Master]
+    supplementary_topics: [forecast]
+    data_tools: [capacity, flow]
+    scrum_stance: >
+      Progress is inspected openly in the Sprint Review and through the Product Backlog; forecasts are
+      uncertain and do not replace empiricism. The Product Owner communicates progress and forecasts to
+      stakeholders. The Scrum Master helps stakeholders understand and enact an empirical approach.
+    sm_moves:
+      - {verb: Teach, where: "stakeholders", move: "Explain that dates are forecasts with a range, and where to see progress (Sprint Review, Product Backlog)"}
+      - {verb: Coach, where: "the Product Owner", move: "Coach the Product Owner to give stakeholders a range and the assumptions behind it"}
+      - {verb: Make transparent, where: Sprint Review, move: "Offer team-level trend data as material for the Sprint Review, not a manager-only report"}
+    coaching_questions:
+      - "What decision does the stakeholder need to make, and what range would be enough for it?"
+    pm_traps: [promising a date, building a Gantt view, comparing teams by points, reporting up in place of the Product Owner]
+
+  - id: S13
+    name: Scrum adoption and organizational impediments
+    owner: Scrum Master
+    events: [Sprint Retrospective]
+    triggers: [not following scrum, scrum but, management doesn't understand, coach the organization, adopt scrum, new to scrum, resistance]
+    guide_anchors: [Scrum Master, Scrum Theory, The Scrum Team]
+    supplementary_topics: [scrum adoption]
+    data_tools: []
+    scrum_stance: >
+      The Scrum Master serves the organization by leading, training and coaching it in Scrum adoption and by
+      removing barriers between stakeholders and Scrum Teams. This is the Scrum Master's own remit.
+    sm_moves:
+      - {verb: Teach, where: "the organization", move: "Run a short session for the affected managers on the roles and events they touch"}
+      - {verb: Remove impediment, where: "the organization", move: "Name the specific barrier, with the evidence, to the person who can remove it"}
+      - {verb: Coach, where: "the Scrum Team", move: "Coach the team on which Scrum practices it wants to strengthen first"}
+    coaching_questions:
+      - "Which single practice, if done better, would help most this Sprint?"
+    pm_traps: [enforcing process compliance as a manager, auditing individuals, adding project-management artifacts]

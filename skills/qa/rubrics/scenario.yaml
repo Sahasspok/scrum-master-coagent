@@ -1,0 +1,10 @@
+agent: scrum-playbook
+max_iterations: 3
+checks:
+  - {id: SCN-1, blocking: true, type: script, rule: "scenario_match exited 0 and every listed guide chunk file exists", how: "python scripts/scenario_match.py \"<request>\"; check guide_chunks paths"}
+  - {id: SCN-2, blocking: true, type: script, rule: "Ledger holds a scenario.match row and one guide.<SG-nn> row per retrieved Guide chunk", how: "inspect ledger.jsonl"}
+  - {id: SCN-3, blocking: true, type: judgment, rule: "The owner stated for the scenario agrees with the retrieved Guide text; quote the supporting line, or report a playbook mismatch"}
+  - {id: SCN-4, blocking: true, type: judgment, rule: "The matched scenario fits the literal request; if not, the run used the unclassified fallback and said so"}
+  - {id: SCN-5, blocking: true, type: judgment, rule: "No move in the plan matches a pm_traps entry for the scenario (the anti-PM test)"}
+  - {id: SCN-6, blocking: true, type: judgment, rule: "Only tier-1 (Scrum Guide) chunks are treated as authority; supplementary chunks are used for technique only and never override the Guide"}
+  - {id: SCN-7, blocking: false, type: judgment, rule: "data_tools lists only tools the scenario needs; no metrics are run for a purely coaching or facilitation question"}

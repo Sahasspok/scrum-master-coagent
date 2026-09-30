@@ -1,0 +1,8 @@
+# Edited by the human only. Meta-QA compares recomputed calibration against these bands;
+# nothing in the system changes these values automatically.
+capacity_mape_max_pct: 15
+readiness_precision_min_pct: 70
+flow_confirmation_min_pct: 60
+qa_agreement_min_pct: 90
+research_integrity_min_pct: 100
+min_closed_runs_for_trend: 3

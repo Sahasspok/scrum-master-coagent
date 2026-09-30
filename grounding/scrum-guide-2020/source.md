@@ -190,7 +190,7 @@ Scrum pillars of transparency, inspection, and adaptation come to life
 building trust.
 
   
-## Scrum Team
+## The Scrum Team
 
   
 The fundamental unit of Scrum is a small team of people, a Scrum Team.

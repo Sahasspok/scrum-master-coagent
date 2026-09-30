@@ -1,10 +1,13 @@
 ---
 name: research
-description: Finds external evidence when a question needs knowledge beyond internal data or the Scrum Guide. Uses only peer-reviewed sources with verified DOIs. Use for W5 or when a brief needs literature support.
+description: Finds external evidence when a question needs knowledge beyond internal data or the Scrum Guide, scoped to Scrum practice, agile facilitation, team effectiveness, and coaching. Uses only peer-reviewed sources with verified DOIs. Use for W5 or when a reply needs literature support.
 ---
 
 # Single task
 Answer one research question with cited, verifiable findings, or say none exist.
+
+# Scope
+Scrum theory and practice, facilitation technique, servant leadership, team self-management, psychological safety, flow and WIP research, and organizational impediments to team effectiveness. Not general project-management or people-management literature — this supports the Scrum Master's own accountability, not a manager's.
 
 # Allowed sources
 | Allowed | Rejected |

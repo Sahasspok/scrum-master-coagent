@@ -1,10 +1,17 @@
 agent: composer
 max_iterations: 3
 checks:
-  - {id: CMP-1, blocking: true, type: script, rule: "Structure, ledger tags, low-confidence wording, human-context labels, length limit", how: "python scripts/qa/verify_brief.py brief.md ledger.jsonl"}
-  - {id: CMP-2, blocking: true, type: judgment, rule: "Recommendation is consistent with the evidence; each recommendation sentence cites a ledger id whose claim supports it"}
-  - {id: CMP-3, blocking: true, type: judgment, rule: "No unsupported claim; anything unsourced is labeled ASSUMPTION"}
-  - {id: CMP-4, blocking: true, type: judgment, rule: "At least 2 options with trade-offs; a 'this changes if' condition tied to a ledger value"}
-  - {id: CMP-5, blocking: true, type: judgment, rule: "No ranking or evaluation of individuals"}
-  - {id: CMP-6, blocking: true, type: judgment, rule: "Provenance lists QA verdict and iteration per agent; UNVERIFIED banner present if any escalation"}
-  - {id: CMP-7, blocking: false, type: judgment, rule: "Readable in under 2 minutes; plain language; no adjectives without numbers"}
+  - {id: CMP-1, blocking: true, type: script, rule: "Four-part structure present (Answer, Data supporting this, Recommendation, Questions to keep moving), ledger tags, low-confidence wording, human-context labels, Provenance footer, length limit", how: "python scripts/qa/verify_brief.py brief.md ledger.jsonl"}
+  - {id: CMP-2, blocking: true, type: judgment, rule: "Part 1 (Answer) directly answers the literal question asked, before any other content, and names the owner when the matter is another role's"}
+  - {id: CMP-3, blocking: true, type: judgment, rule: "Recommendation is consistent with the evidence; each move sentence cites a ledger id whose claim supports it"}
+  - {id: CMP-4, blocking: true, type: judgment, rule: "No unsupported claim; anything unsourced is labeled ASSUMPTION"}
+  - {id: CMP-5, blocking: true, type: judgment, rule: "At least 2 Scrum Master moves with gains and costs, plus 'Do nothing'"}
+  - {id: CMP-6, blocking: true, type: judgment, rule: "Insight and 'what I'd look into next' state something beyond the evidence table, not a restatement of part 2"}
+  - {id: CMP-7, blocking: true, type: judgment, rule: "Questions to keep moving are forward-looking and offer only facilitation material (agenda, data slide, discussion prompt); never work that belongs to the Developers or Product Owner"}
+  - {id: CMP-8, blocking: true, type: judgment, rule: "No ranking or evaluation of individuals"}
+  - {id: CMP-9, blocking: true, type: judgment, rule: "Provenance lists QA verdict and iteration per agent plus scenario id and Guide chunk ids; UNVERIFIED banner opens the reply if any escalation occurred"}
+  - {id: CMP-10, blocking: false, type: judgment, rule: "Readable in under 2 minutes; plain language; no adjectives without numbers"}
+  - {id: CMP-11, blocking: true, type: script, rule: "Role fidelity: Whose call named, Guide citation present, moves use Scrum Master verbs, Decision for you names a move, no decisions made or work offered for another role", how: "python scripts/qa/check_accountability.py brief.md"}
+  - {id: CMP-12, blocking: true, type: judgment, rule: "'What Scrum says' paraphrases the retrieved Guide chunk faithfully; quote the chunk line that supports it"}
+  - {id: CMP-13, blocking: true, type: judgment, rule: "'Decision for you' is a choice the Scrum Master owns (which move to make), never the Developers' or Product Owner's decision"}
+  - {id: CMP-14, blocking: true, type: judgment, rule: "The reply would read as coaching and facilitation to an experienced Scrum Master, not as project management (no commitments, dates, assignments, ordering or status demands)"}

@@ -1,0 +1,9 @@
+agent: meta-qa
+max_iterations: 3
+checks:
+  - {id: MQA-1, blocking: true, type: script, rule: "Independent recompute of calibration matches the report exactly", how: "python scripts/qa/verify_calibration.py runs/ meta_qa_out.json"}
+  - {id: MQA-2, blocking: true, type: script, rule: "Stated bands ('within band' / 'drifting') match the recomputed numbers against skills/meta-qa/scorecard.yaml", how: "python scripts/qa/check_band.py meta_qa_out.json skills/meta-qa/scorecard.yaml"}
+  - {id: MQA-3, blocking: true, type: judgment, rule: "Fewer than min_closed_runs_for_trend closed runs: trend labeled low confidence, no drift claim made"}
+  - {id: MQA-4, blocking: true, type: judgment, rule: "Every judgment-resample disagreement is listed verbatim (check id, both verdicts), not summarized away"}
+  - {id: MQA-5, blocking: true, type: judgment, rule: "No individual blamed for a drift or disagreement; findings are framed at the system or rubric level"}
+  - {id: MQA-6, blocking: true, type: judgment, rule: "No rubric or scorecard value was changed by meta-qa itself; only reported"}
